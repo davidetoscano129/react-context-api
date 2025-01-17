@@ -1,6 +1,7 @@
 import './styles/App.css';
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import { PostsProvider } from './context/PostsContext';
 import axios from 'axios';
 
 import Layout from './components/Layout';
@@ -73,15 +74,18 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="posts" element={<PostsPage articles={articles} handleDelete={handleDelete} />} />
-          <Route path="posts/:id" element={<PostDetailPage />} />
-          <Route path="*" element={<NotFoundPage />} /> {/* Pagina 404 */}
-        </Route>
-      </Routes>
+      <PostsProvider> {/* Wrappa l'app */}
+        <div className="App">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/posts" element={<PostsPage />} />
+            <Route path="/posts/:id" element={<PostDetailPage />} />
+          </Routes>
+        </div>
+      </PostsProvider>
+      );
 
       {/* Form per creare un nuovo articolo */}
       <h1>React Blog Form Multifield</h1>
